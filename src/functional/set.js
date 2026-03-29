@@ -8,9 +8,14 @@
 import { isImmutable } from '../predicates/isImmutable';
 import hasOwnProperty from '../utils/hasOwnProperty';
 import isDataStructure from '../utils/isDataStructure';
+import { isProtoKey } from '../utils/protoInjection';
 import shallowCopy from '../utils/shallowCopy';
 
 export function set(collection, key, value) {
+  if (typeof key === 'string' && isProtoKey(key)) {
+    return collection;
+  }
+
   if (!isDataStructure(collection)) {
     throw new TypeError(
       'Cannot update non-data-structure value: ' + collection
